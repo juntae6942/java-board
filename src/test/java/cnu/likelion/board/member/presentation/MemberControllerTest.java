@@ -1,21 +1,22 @@
-package cnu.likelion.board.member;
+package cnu.likelion.board.member.presentation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.linesOf;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import cnu.likelion.board.ApiTest;
-import cnu.likelion.board.member.request.MemberSignupRequest;
+import cnu.likelion.board.member.domain.MemberRepository;
+import cnu.likelion.board.member.presentation.request.MemberSignupRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -27,7 +28,7 @@ class MemberControllerTest extends ApiTest {
     class 회원가입_시 {
 
         @Test
-        void 회원가입에_성공하면_201_상태코드와_함께_응답_헤더의_Location_값으로_생성된_회원을_조회할_수_있는_URL이_반환된다() {
+        void 성공하면_201_상태코드와_함께_응답_헤더의_Location_값으로_생성된_회원을_조회할_수_있는_URL이_반환된다() {
             // given
             MemberSignupRequest request = new MemberSignupRequest(
                     "likelion",
@@ -48,7 +49,34 @@ class MemberControllerTest extends ApiTest {
             // then
             assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
             assertThat(response.header("Location")).contains("/members/");
-            System.out.println(response.header("Location"));
+        }
+
+        @Test
+        void 아이디가_중복되면_409_상태코드와_예외_메세지를_반환한다() {
+            // given
+            MemberSignupRequest request = new MemberSignupRequest(
+                    "likelion",
+                    "likelion1234",
+                    "멋사"
+            );
+            RestAssured.given()
+                    .contentType(ContentType.JSON)
+                    .body(request)
+                    .post("/members")
+                    .then()
+                    .extract();
+
+            // when
+            ExtractableResponse<Response> response = RestAssured.given()
+                    .contentType(ContentType.JSON)
+                    .body(request)
+                    .post("/members")
+                    .then()
+                    .log().all()
+                    .extract();
+
+            // then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.CONFLICT.value());
         }
     }
 }
