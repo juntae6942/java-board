@@ -1,6 +1,5 @@
 package cnu.likelion.board.member.domain;
 
-import cnu.likelion.board.member.domain.Member;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
