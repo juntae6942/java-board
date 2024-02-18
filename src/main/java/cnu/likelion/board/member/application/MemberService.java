@@ -6,6 +6,7 @@ import cnu.likelion.board.member.domain.MemberValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
 // TODO [1단계] Service 빈으로 등록하세요
 public class MemberService {
 
