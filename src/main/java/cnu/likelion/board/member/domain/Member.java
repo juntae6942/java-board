@@ -22,5 +22,6 @@ public class Member {
 
     public void signup(MemberValidator validator) {
         // TODO [1단계] validator를 통해 닉네임 중복 검증을 진행하세요
+        validator.validateDuplicatedUsername(username);
     }
 }
