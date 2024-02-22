@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 @Configuration
 public class AuthConfig implements WebMvcConfigurer {
-
     // TODO [3단계] AuthArgumentResolver 를 의존성 주입 받는다.
     private final AuthArgumentResolver authArgumentResolver;
 

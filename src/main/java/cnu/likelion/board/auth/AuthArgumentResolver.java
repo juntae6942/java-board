@@ -17,7 +17,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 @Component
 public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
-
     private final JwtService jwtService;
 
     @Override
